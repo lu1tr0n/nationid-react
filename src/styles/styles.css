@@ -1,0 +1,30 @@
+/*
+ * `@nationid/react` — optional baseline stylesheet.
+ *
+ * Import via `@nationid/react/styles.css` to pick up a minimal, accessible
+ * default look. Every selector is namespaced under the `.nrx-` prefix and
+ * intentionally has low specificity so host projects can override safely.
+ *
+ * Headless-first principle: components work without this file. Drop in when
+ * you want defaults instead of writing your own.
+ */
+
+.nrx-input {
+  display: inline-block;
+  font: inherit;
+  padding: 0.5em 0.75em;
+  border: 1px solid currentColor;
+  border-radius: 0.25em;
+  background: transparent;
+  color: inherit;
+}
+
+.nrx-input[aria-invalid="true"] {
+  border-color: #c00;
+}
+
+.nrx-error {
+  margin-top: 0.25em;
+  font-size: 0.875em;
+  color: #c00;
+}

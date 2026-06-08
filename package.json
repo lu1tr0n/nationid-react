@@ -1,0 +1,118 @@
+{
+  "name": "@nationid/react",
+  "version": "0.0.0",
+  "description": "React components and hooks for nationid — typed validators for 54 countries' identity and tax documents.",
+  "keywords": [
+    "react",
+    "react-component",
+    "nationid",
+    "validation",
+    "tax-id",
+    "national-id",
+    "identity",
+    "form",
+    "input",
+    "react-hook-form",
+    "headless",
+    "accessibility",
+    "a11y",
+    "i18n",
+    "latam",
+    "validator"
+  ],
+  "homepage": "https://lu1tr0n.github.io/nationid_example/",
+  "bugs": {
+    "url": "https://github.com/lu1tr0n/nationid-react/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lu1tr0n/nationid-react.git"
+  },
+  "license": "MIT",
+  "author": "Luis Navarro <luis.navarro.alvarez.1991@gmail.com> (https://github.com/lu1tr0n)",
+  "type": "module",
+  "sideEffects": [
+    "./dist/styles.css"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./rhf": {
+      "types": "./dist/rhf/index.d.ts",
+      "import": "./dist/rhf/index.js",
+      "require": "./dist/rhf/index.cjs"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:dist": "vitest run --config vitest.dist.config.ts",
+    "format": "biome format --write",
+    "lint": "biome lint",
+    "check": "biome check",
+    "check:publint": "publint --level error",
+    "verify": "pnpm typecheck && pnpm check && pnpm test && pnpm build && pnpm test:dist && pnpm check:publint",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish",
+    "prepublishOnly": "pnpm verify"
+  },
+  "peerDependencies": {
+    "nationid": "^2.2.1",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
+    "react-hook-form": "^7.50.0"
+  },
+  "peerDependenciesMeta": {
+    "react-hook-form": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.14",
+    "@changesets/cli": "2.29.7",
+    "@testing-library/jest-dom": "6.6.4",
+    "@testing-library/react": "16.3.0",
+    "@testing-library/user-event": "14.6.1",
+    "@types/node": "22.10.10",
+    "@types/react": "19.0.10",
+    "@types/react-dom": "19.0.4",
+    "@vitest/coverage-v8": "4.1.8",
+    "axe-core": "4.10.3",
+    "jsdom": "26.1.0",
+    "nationid": "^2.2.1",
+    "publint": "0.3.21",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-hook-form": "7.55.0",
+    "tsup": "8.3.6",
+    "typescript": "5.8.3",
+    "vitest": "4.1.8",
+    "vitest-axe": "0.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "packageManager": "pnpm@9.15.4"
+}

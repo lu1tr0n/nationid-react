@@ -1,0 +1,116 @@
+# CodeRabbit configuration for @nationid/react.
+#
+# Reference: https://docs.coderabbit.ai/reference/configuration
+#
+# Project context: @nationid/react is a React 18/19 companion to the
+# framework-agnostic `nationid` validator. v0.1 ships components and hooks
+# for 8 LATAM countries. Headless-first styling; accessibility and i18n are
+# first-class concerns.
+
+language: en
+
+tone_instructions: "Professional with warmth. Open with a brief positive note only if deserved. Give findings as concrete observations with file:line cites and concrete diffs over abstract critique. No AI attribution. Say so when uncertain."
+
+early_access: false
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  changed_files_summary: true
+  sequence_diagrams: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+
+  path_instructions:
+    - path: "src/components/**/*.tsx"
+      instructions: |
+        React components in this library are headless-first and must keep
+        accessibility correct out of the box. Flag:
+        - Missing `aria-invalid` when a validation error is shown, or
+          missing `aria-describedby` linking the input to its error message.
+        - Inputs without an associated `<label>` (either implicit via
+          wrapping or explicit via `htmlFor`).
+        - Error messages rendered without `role="alert"` or
+          `aria-live="polite"`.
+        - State updates in `useEffect` that could fire on every keystroke
+          rather than on a debounced or onBlur cadence.
+        - Hardcoded English strings that should flow through the
+          `nationid/i18n` locale plumbing.
+        - Use of `dangerouslySetInnerHTML` or `eval`.
+        - Inline styles for anything beyond layout-positional concerns;
+          visual styling belongs in the optional `src/styles/styles.css`.
+
+    - path: "src/hooks/**/*.ts"
+      instructions: |
+        Hooks must be referentially stable: validators returned from hooks
+        should be memoized via `useCallback` keyed on the relevant inputs.
+        Flag any hook that creates a new function on every render where
+        consumers are likely to pass it to a memoized child.
+
+    - path: "src/rhf/**/*.{ts,tsx}"
+      instructions: |
+        `react-hook-form` is an optional peer dependency. Code in this
+        subpath must not be imported by `src/components/**` or `src/index.ts`
+        directly. Flag any cross-import that would force `react-hook-form`
+        on consumers who only use the base components.
+
+    - path: "tests/**/*.test.{ts,tsx}"
+      instructions: |
+        Every component test must include at least one axe-core a11y
+        assertion (`expect(await axe(container)).toHaveNoViolations()` or
+        the `vitest-axe` matcher equivalent). Flag tests missing this.
+        User-driven scenarios should use `@testing-library/user-event`
+        rather than `fireEvent` for blur/focus/keyboard simulation.
+
+    - path: ".changeset/*.md"
+      instructions: |
+        Changeset entries describe the release in the present tense, group
+        changes by feature/refactor/docs/fix, and reference issue numbers
+        where applicable. Avoid AI-attribution lines. Patches must explicitly
+        confirm no API surface changes; minors must enumerate the new
+        components, hooks, or countries shipped.
+
+    - path: "package.json"
+      instructions: |
+        `react`, `react-dom`, `react-hook-form`, and `nationid` must remain
+        in `peerDependencies`, never in `dependencies`. Flag any move that
+        would force a specific React major on consumers. `publishConfig.provenance`
+        must stay true for npm signing.
+
+    - path: ".github/workflows/**"
+      instructions: |
+        Workflow changes can affect the release pipeline. Flag any change
+        that removes pinned-by-sha action references, removes step-security
+        Harden-Runner, or weakens permission scopes. The release workflow
+        must keep using Trusted Publisher OIDC (no NPM_TOKEN secret).
+
+  tools:
+    biome:
+      enabled: true
+    actionlint:
+      enabled: true
+    markdownlint:
+      enabled: true
+    yamllint:
+      enabled: true
+    gitleaks:
+      enabled: true
+
+chat:
+  auto_reply: true
+
+knowledge_base:
+  learnings:
+    scope: auto
+  issues:
+    scope: auto
+  pull_requests:
+    scope: auto
