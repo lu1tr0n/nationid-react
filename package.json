@@ -1,6 +1,7 @@
 {
   "name": "@nationid/react",
   "version": "0.0.0",
+  "private": true,
   "description": "React components and hooks for nationid — typed validators for 54 countries' identity and tax documents.",
   "keywords": [
     "react",
