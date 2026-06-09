@@ -97,8 +97,12 @@ export const DocumentInput = forwardRef<HTMLInputElement, DocumentInputProps>(
 
     // External errorMessage wins; otherwise we surface our own (set on blur,
     // cleared on next edit so we do not nag while the user is still typing).
+    // An externally-controlled error string skips the `touched` gate so RHF
+    // (or any other host) can drive the error state from form-submit without
+    // needing the user to blur the field first.
     const visibleError = errorMessage !== undefined ? errorMessage : internalError;
-    const isInvalid = touched && Boolean(visibleError);
+    const isExternalError = errorMessage !== undefined && errorMessage !== null;
+    const isInvalid = (touched || isExternalError) && Boolean(visibleError);
 
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {
