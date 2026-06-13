@@ -63,6 +63,14 @@ jobs:
           publish: pnpm run release
           commit: "chore: release"
           title: "chore: release"
+          # Mirror every successful npm publish to a GitHub Release at the
+          # matching `vX.Y.Z` tag, with notes lifted from CHANGELOG.md. This
+          # keeps https://github.com/lu1tr0n/nationid-react/releases in sync
+          # with the npm registry — important for downstream tooling
+          # (Dependabot, security scanners, social previews) that resolves
+          # versions through GitHub. The v0.0.1 release was backfilled
+          # manually; every subsequent release lands here automatically.
+          createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # NPM_TOKEN is consumed by `changesets/action` itself: when it sees
