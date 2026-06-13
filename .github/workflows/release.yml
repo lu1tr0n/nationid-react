@@ -65,14 +65,17 @@ jobs:
           title: "chore: release"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NODE_AUTH_TOKEN is set so `npm publish` can authenticate when
-          # the package does not yet exist on npm (first-publish bootstrap)
-          # OR when Trusted Publishing has not been configured for it.
-          # Once Trusted Publishing is configured at
-          # https://www.npmjs.com/package/@nationid/react/access and the
-          # NPM_TOKEN secret is removed, this env value collapses to the
-          # empty string and `npm@11.5.1+` falls through to OIDC TP —
-          # provenance attestation is generated in either path because
-          # this job has `id-token: write` and runs in GitHub Actions
-          # (a recognised OIDC provider).
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # NPM_TOKEN is consumed by `changesets/action` itself: when it sees
+          # the env var, it authenticates `npm publish` with the classic
+          # token. When the env var is absent, the action flips into Trusted
+          # Publishing (OIDC) mode — but TP cannot be configured for a
+          # package that does not yet exist on npm, so the very first publish
+          # needs the classic token. After v0.0.1 lands and Trusted
+          # Publishing is configured at
+          # https://www.npmjs.com/package/@nationid/react/access, the
+          # NPM_TOKEN repository secret can be deleted; this expression then
+          # collapses to the empty string, the env var is dropped, and every
+          # subsequent release authenticates via OIDC. Provenance
+          # attestation is emitted in both paths because the job has
+          # `id-token: write` and runs in GitHub Actions.
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
